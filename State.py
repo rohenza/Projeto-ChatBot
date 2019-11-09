@@ -1,22 +1,30 @@
 import Tokenize
 import Answers
 
+searchList = {}
 class SearchState:
 
     def answer(self, text):
-        Answers.printSearch(text, corpus)
+        searchList = Answers.printSearch(text, corpus)
+        print("Is it one of those games you were looking for or do you want to search again? ")
         return SearchAgainState()
 
 
 class SearchAgainState:
 
     def answer(self, text):
-        return GameNameState()
+        if Answers.isPositive(text):
+            print("What game would you like to search?")
+            return SearchState
+        else:
+            print("What's the name of the game?")
+            return GameNameState()
 
 
 class GameNameState:
 
     def answer(self, text):
+        
         return ConfirmGameState()
 
 
@@ -94,5 +102,4 @@ corpus = {"league of legends": {"price": 100.00, "genre": "moba", "deion": "leag
          "the elder scrolls": {"price": 170.00, "genre": "rpg", "deion": "winner of more than 200 game of the year awards, skyrim special edition brings the epic fantasy to life in stunning detail. the special edition includes the critically acclaimed game and add-ons with all-new features like remastered art and effects, volumetric god rays, dynamic depth of field, screen-space reflections, and more."},
          "lego batman": {"price": 12.50, "genre": "action-adventure", "deion": "the caped crusader joins forces with the super heroes of the dc comics universe and blasts off to outer space to stop the evil brainiac from destroying earth."},
          }
-
-Answers.printSearch("fps", corpus)
+Answers.printSearch("action", corpus)

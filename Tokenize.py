@@ -4,24 +4,25 @@ def tratarTexto(text):
     return text
 
 def coeficienteSimilaridade(query, text, corpus):
-    textBag = bag_of_words(text)
+    textBag = bag_of_words(corpus)
     soma = 0
     for word in textBag:
         dij = tf_idf(word, text, corpus)
-        print(dij)
         wqj = tf_idf(word, query, corpus)
-        soma += dij * 1
-    print(soma)
+        soma += dij * wqj
     return soma
 
 def bag_of_words(corpus):
     bag = []
-    corpus = tratarTexto(corpus)
-    for phrase in corpus:
+    text = []
+    for key in corpus:
+        text.append(tratarTexto(corpus[key]["text"]))
+    for phrase in text:
         frase = standartize(phrase)
         for word in frase:
             if word not in bag:
                 bag.append(word)
+
 
     return bag
 
@@ -38,7 +39,7 @@ def term_frequency(keyword, phrase):
 def qntDocumentos_contendoTermo(keyword, corpus):
     docsContendoTermo = 0
     for frase in corpus:
-        frase = standartize(frase)
+        frase = standartize(corpus[frase]["text"])
         if (keyword in frase):
             docsContendoTermo = docsContendoTermo + 1
 
