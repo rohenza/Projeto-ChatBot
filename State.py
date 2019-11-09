@@ -2,83 +2,115 @@ import Tokenize
 import Answers
 
 searchList = {}
-class SearchState:
+
+class SearchState(object):
 
     def answer(self, text):
-        searchList = Answers.printSearch(text, corpus)
+        Answers.printSearch(text, corpus)
         print("Is it one of those games you were looking for or do you want to search again? ")
         return SearchAgainState()
 
 
-class SearchAgainState:
+class SearchAgainState(object):
 
     def answer(self, text):
         if Answers.isPositive(text):
             print("What game would you like to search?")
-            return SearchState
-        else:
+            return SearchState()
+        elif not Answers.isPositive(text):
             print("What's the name of the game?")
             return GameNameState()
+        else:
+            print("Sorry, I didn't understand what you meant, can you be more specific?")
+            return SearchAgainState()
 
 
-class GameNameState:
+class GameNameState(object):
 
     def answer(self, text):
-        
+        list = ChatBot.order.searchList
+        for game in list:
+            list[game]["ngram"] = Tokenize.nGram(game, text)
+        list = sorted(list.items(), reverse=True)
+        ChatBot.order.game = list[0]
+        print("Is this the game you are looking for?")
+        print(ChatBot.order.game)
         return ConfirmGameState()
 
 
-class ConfirmGameState:
+class ConfirmGameState(object):
 
     def answer(self, text):
-        return AddAnotherGameState()
+        if Answers.isPositive(text):
+            print("Do you want to add another game?")
+            return AddAnotherGameState()
+        elif not Answers.isPositive(text):
+            print("What's the name of the game?")
+            return GameNameState()
+        else:
+            print("Sorry, I didn't understand what you meant, can you be more specific?")
+            return ConfirmGameState()
 
-class AddAnotherGameState:
+class AddAnotherGameState(object):
 
     def answer(self, text):
-        return UserNameState()
+        if Answers.isPositive(text):
+            print(" What game do you want??")
+            return SearchState()
+        elif not Answers.isPositive(text):
+            print("What's your name?")
+            return UserNameState()
+        else:
+            print("Sorry, I didn't understand what you meant, can you be more specific?")
+            return ConfirmGameState()
 
-class UserNameState:
+class UserNameState(object):
 
     def answer(self, text):
+        ChatBot.order.name = text
+        print("What's your email?")
         return UserEmailState()
 
-class UserEmailState:
+class UserEmailState(object):
 
     def answer(self, text):
+        ChatBot.order.email = text
+        print("What's your CPF?")
         return CPFState()
 
-class CPFState:
+class CPFState(object):
 
     def answer(self, text):
+        ChatBot.order.cpf = text
+        print("How do you want to pay? Credit card or bank ticket?")
         return PaymentMethodState()
 
-class PaymentMethodState:
+class PaymentMethodState(object):
 
     def answer(self, text):
         return PaymentInstallmentsState()
 
-class PaymentInstallmentsState:
+class PaymentInstallmentsState(object):
 
     def answer(self, text):
         return CreditCardNumberState()
 
-class CreditCardNumberState:
+class CreditCardNumberState(object):
 
     def answer(self, text):
         return CardExpirationTimeState()
 
-class CardExpirationTimeState:
+class CardExpirationTimeState(object):
 
     def answer(self, text):
         return CardholderState()
 
-class CardholderState:
+class CardholderState(object):
 
     def answer(self, text):
         return VerificationCodeState()
 
-class VerificationCodeState:
+class VerificationCodeState(object):
 
     def answer(self, text):
         return SearchState()
@@ -102,4 +134,6 @@ corpus = {"league of legends": {"price": 100.00, "genre": "moba", "deion": "leag
          "the elder scrolls": {"price": 170.00, "genre": "rpg", "deion": "winner of more than 200 game of the year awards, skyrim special edition brings the epic fantasy to life in stunning detail. the special edition includes the critically acclaimed game and add-ons with all-new features like remastered art and effects, volumetric god rays, dynamic depth of field, screen-space reflections, and more."},
          "lego batman": {"price": 12.50, "genre": "action-adventure", "deion": "the caped crusader joins forces with the super heroes of the dc comics universe and blasts off to outer space to stop the evil brainiac from destroying earth."},
          }
-Answers.printSearch("action", corpus)
+
+
+Answers.printSearch("fight", corpus)

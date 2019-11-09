@@ -80,7 +80,27 @@ def tokenTreatment(text):
     return
 
 def nGram(word1, word2):
-    return
+    word1 = standartize(word1)
+    word2 = standartize(word2)
 
+    diagramWord1 = diagram(word1)
+    diagramWord2 = diagram(word2)
+
+    contador = 0
+
+    for i in diagramWord1:
+        if i in diagramWord2:
+            contador += 1
+
+    return 2 * contador / (len(diagramWord1) + len(diagramWord2))
+
+def diagram(word):
+    list = []
+    for cont in range(len(word)-1):
+        diagram = word[cont] + word[cont+1]
+        if diagram not in list:
+            list.append(diagram)
+
+    return list
 def regexEmail(text):
     return
