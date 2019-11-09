@@ -36,7 +36,13 @@ def getCorpus(corpus):
 
     return searchList
 
+def isCreditCard(text):
+    return True
 
-positiveAnswers = ["yes", "yeah", "yeap", "y", "ye", "affirmative", "amen", "fine", "good", "okay", "true", "yea", "all right", "aye", "beyond a doubt", "by all means", "certainly", "definitely", "even so", "exactly", "gladly", "good enough", "granted", "indubitably", "just so", "most assuredly", "naturally", "of course", "positively", "precisely", "sure thing", "surely", "undoubtedly", "unquestionably", "very well", "willingly", "without fail", "yep"]
+positiveAnswers = ["yes", "yeah", "yeap", "y", "ye", "affirmative", "amen", "fine", "good", "ok", "okay", "true", "yea",
+                   "all right", "aye", "beyond a doubt", "by all means", "certainly", "definitely", "even so",
+                   "exactly", "gladly", "good enough", "granted", "indubitably", "just so", "most assuredly",
+                   "naturally", "of course", "positively", "precisely", "sure thing", "surely", "undoubtedly",
+                   "unquestionably", "very well", "willingly", "without fail", "yep"]
 
-negativeAnswers = ["nay", "no", "negative", "not", "never", "nix", "n", "nop", "nope"]
+negativeAnswers = ["nay", "no", "negative", "not", "never", "nix", "n", "nop", "nope", "false"]
