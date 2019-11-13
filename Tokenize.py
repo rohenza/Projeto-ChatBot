@@ -36,7 +36,8 @@ def term_frequency(keyword, phrase):
     for word in phrase:
         if word == keyword:
             freq = freq + 1
-
+    if freq == 0:
+        return 0
     return freq / (len(phrase))
 
 
