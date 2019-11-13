@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Nov 13 18:42:57 2019
+
+@author: augusto.coelho
+"""
+
 import State
 from State import SearchState
 

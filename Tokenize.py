@@ -1,6 +1,48 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Nov 13 18:45:54 2019
+
+@author: augusto.coelho
+"""
+
 import math
 import re
 
+import nltk
+from nltk import tokenize
+from nltk.corpus import stopwords
+import stanfordnlp
+
+
+def tokenizacao(texto):
+    
+    textinho = tokenize.word_tokenize(texto)
+
+    return textinho
+
+def lematizacao(texto):
+    
+    parsed_text = {'word':[],'lemma':[]}
+    for sent in texto.sentences:
+        for wrd in sent.words:
+            parsed_text['word'].append(wrd.text)
+            parsed_text['lemma'].append(wrd.lemma)
+    return parsed_text
+
+
+
+
+def removeStopwords(texto):
+
+    stop_words = set(stopwords.words('english'))
+    filtered_sentence = [w for w in texto if not w in stop_words]
+
+    filtered_sentence = []
+
+    for w in texto:
+        if w not in stop_words:
+            filtered_sentence.append(w)
+    return filtered_sentence
 
 def tratarTexto(text):
     return text
@@ -72,11 +114,17 @@ def tf_idf(keyword, phrase, corpus):
 
 
 def standartize(phrase):
+    phrase = phrase.lower()
     phrase = phrase.replace(".", "")
     phrase = phrase.replace(",", "")
     phrase = phrase.replace("'", "")
-    phrase = phrase.lower()
-    phrase = phrase.split()
+    phrase = tokenizacao(phrase)
+    print(type(phrase))
+    phrase = lematizacao(phrase)
+    phrase = removeStopwords(phrase)
+    
+    '''
+    phrase = phrase.split()'''
 
     return phrase
 

@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Nov 13 18:45:56 2019
+
+@author: augusto.coelho
+"""
+
 import Tokenize
 import Answers
 import time
