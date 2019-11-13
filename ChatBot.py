@@ -1,12 +1,15 @@
 import State
+from State import SearchState
 
 
 def __main__():
-    print("Hello! What game would you like to search??")
+
+    order = State.Order()
+    print("Hello! What game would you like to search?")
     answer = input("")
 
-    while State.order.state is not None:
-        State.order.answer(answer)
+    while order.state is not None:
+        order.answer(answer)
 
         answer = input("")
 

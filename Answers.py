@@ -10,10 +10,17 @@ def isPositive(text):
 
 def printSearch(text, corpus):
     searchResult = searchGame(text, corpus)
+    print("Games: ")
+    print("_________________________________")
     for game in sorted(searchResult.items(), reverse=True):
-        print('1')
+        #print(game[0], corpus[game[0]])
+        gameC = corpus[game[0]]
+        print("Name: ", gameC["name"])
+        print("Price: ", gameC["price"])
+        print("Description: ", gameC["deion"])
+        print("_________________________________")
 
-        print(game[0], corpus[game[0]])
+
     return searchResult
 
 def searchGame(text, corpus):
@@ -25,7 +32,6 @@ def searchGame(text, corpus):
         searchList[key]["coe"] = Tokenize.coeficienteSimilaridade(text, searchList[key]["text"], searchList)
         if searchList[key]["coe"] > 0:
             gameList[key] = searchList[key]["coe"]
-    print(gameList)
     return gameList
 
 def getCorpus(corpus):
@@ -37,7 +43,14 @@ def getCorpus(corpus):
     return searchList
 
 def isCreditCard(text):
-    return True
+    credit = Tokenize.nGram(text, "credit card")
+    ticket = Tokenize.nGram(text, "bank ticket")
+    if credit > ticket:
+        return True
+    elif ticket > credit:
+        return False
+    else:
+        return None
 
 positiveAnswers = ["yes", "yeah", "yeap", "y", "ye", "affirmative", "amen", "fine", "good", "ok", "okay", "true", "yea",
                    "all right", "aye", "beyond a doubt", "by all means", "certainly", "definitely", "even so",

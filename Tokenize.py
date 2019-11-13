@@ -1,7 +1,10 @@
 import math
+import re
+
 
 def tratarTexto(text):
     return text
+
 
 def coeficienteSimilaridade(query, text, corpus):
     textBag = bag_of_words(corpus)
@@ -11,6 +14,7 @@ def coeficienteSimilaridade(query, text, corpus):
         wqj = tf_idf(word, query, corpus)
         soma += dij * wqj
     return soma
+
 
 def bag_of_words(corpus):
     bag = []
@@ -23,8 +27,8 @@ def bag_of_words(corpus):
             if word not in bag:
                 bag.append(word)
 
-
     return bag
+
 
 def term_frequency(keyword, phrase):
     freq = 0
@@ -67,7 +71,6 @@ def tf_idf(keyword, phrase, corpus):
 
 
 def standartize(phrase):
-
     phrase = phrase.replace(".", "")
     phrase = phrase.replace(",", "")
     phrase = phrase.replace("'", "")
@@ -76,12 +79,10 @@ def standartize(phrase):
 
     return phrase
 
-def tokenTreatment(text):
-    return
 
 def nGram(word1, word2):
-    word1 = standartize(word1)
-    word2 = standartize(word2)
+    word1 = word1.replace(" ", "")
+    word2 = word2.replace(" ", "")
 
     diagramWord1 = diagram(word1)
     diagramWord2 = diagram(word2)
@@ -91,16 +92,35 @@ def nGram(word1, word2):
     for i in diagramWord1:
         if i in diagramWord2:
             contador += 1
+    nGram = 2 * contador / (len(diagramWord1) + len(diagramWord2))
+    return nGram
 
-    return 2 * contador / (len(diagramWord1) + len(diagramWord2))
 
 def diagram(word):
     list = []
-    for cont in range(len(word)-1):
-        diagram = word[cont] + word[cont+1]
+    for cont in range(len(word) - 1):
+        diagram = word[cont] + word[cont + 1]
         if diagram not in list:
             list.append(diagram)
 
     return list
-def regexEmail(text):
-    return
+
+
+def valid_email(email):
+    return bool(re.search(r"^[\w\.\+\-]+\@[\w]+\.[a-z]{2,3}$", email))
+
+
+def valid_cpf(text):
+    return bool(re.search(r"[0-9]{11}$", text))
+
+
+def valid_exp_date(text):
+    return bool(re.search(r"[0-1]{1}[0-9]{1}/[2-3]{1}[0-9]{1}$", text))
+
+
+def valid_conf_code(text):
+    return bool(re.search(r"[0-9]{3}$", text))
+
+def valid_card_number(text):
+    return bool(re.search(r"[0-9]{16}$", text))
+
