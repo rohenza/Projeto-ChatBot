@@ -12,7 +12,7 @@ import nltk
 from nltk import tokenize
 from nltk.corpus import stopwords
 import stanfordnlp
-
+nlp = stanfordnlp.Pipeline()
 
 def tokenizacao(texto):
     
@@ -20,13 +20,16 @@ def tokenizacao(texto):
 
     return textinho
 
-def lematizacao(texto):
+def lematizacao(doc):
     
     parsed_text = {'word':[],'lemma':[]}
-    for sent in texto.sentences:
-        for wrd in sent.words:
-            parsed_text['word'].append(wrd.text)
-            parsed_text['lemma'].append(wrd.lemma)
+
+    for texto in doc:
+        texto = nlp(texto)
+        for sent in texto.sentences:
+            for wrd in sent.words:
+                parsed_text['word'].append(wrd.text)
+                parsed_text['lemma'].append(wrd.lemma)
     return parsed_text
 
 
@@ -45,7 +48,15 @@ def removeStopwords(texto):
     return filtered_sentence
 
 def tratarTexto(text):
-    return text
+    #print("aaaaaaaaaaaaaaaaaaaaaa",text)
+    text = tokenizacao(text)
+    #print(type(text))
+    #text = lematizacao(text)
+    text = removeStopwords(text)
+    mano = ""
+    for i in text:
+        mano += (" "+i)
+    return mano
 
 
 def coeficienteSimilaridade(query, text, corpus):
@@ -62,7 +73,7 @@ def bag_of_words(corpus):
     bag = []
     text = []
     for key in corpus:
-        text.append(tratarTexto(corpus[key]["text"]))
+        text.append(corpus[key]["text"])
     for phrase in text:
         frase = standartize(phrase)
         for word in frase:
@@ -86,7 +97,7 @@ def term_frequency(keyword, phrase):
 def qntDocumentos_contendoTermo(keyword, corpus):
     docsContendoTermo = 0
     for frase in corpus:
-        frase = standartize(corpus[frase]["text"])
+        frase = corpus[frase]["text"]
         if (keyword in frase):
             docsContendoTermo = docsContendoTermo + 1
 
@@ -118,13 +129,10 @@ def standartize(phrase):
     phrase = phrase.replace(".", "")
     phrase = phrase.replace(",", "")
     phrase = phrase.replace("'", "")
-    phrase = tokenizacao(phrase)
-    print(type(phrase))
-    phrase = lematizacao(phrase)
-    phrase = removeStopwords(phrase)
     
-    '''
-    phrase = phrase.split()'''
+    
+    
+    phrase = phrase.split()
 
     return phrase
 
